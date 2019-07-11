@@ -22,6 +22,8 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#ifndef GUARD_VECTOR_H
+#define GUARD_VECTOR_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -52,3 +54,5 @@ void vector_pop_back(vector *v);
 void vector_erase(vector *v, size_t pos);
 struct item *vector_at(vector *v, size_t index);
 void vector_free(vector *v);
+
+#endif
