@@ -51,3 +51,4 @@ int vector_push_back(vector *v, struct item *item);
 void vector_pop_back(vector *v);
 void vector_erase(vector *v, size_t pos);
 struct item *vector_at(vector *v, size_t index);
+void vector_free(vector *v);
