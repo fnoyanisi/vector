@@ -1,5 +1,5 @@
 # vector
-Simple C++ std::vector like API for C
+C++ std::vector like API for C
 
 Compiling and testing
 
