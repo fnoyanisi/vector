@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define DEFCAPACITY 32
 /*
  * This struct can be modified to wrap any data type
  */

@@ -32,14 +32,18 @@
  */
 int 
 vector_init(vector *v, size_t i_capacity){
-    if (i_capacity<1)
-        return (-1);
+    size_t capacity;
 
-    if ((v->elements = malloc(sizeof(struct item) * i_capacity)) == NULL)
+    if (i_capacity<1)
+        capacity = DEFCAPACITY;
+    else
+        capacity = i_capacity;
+
+    if ((v->elements = malloc(sizeof(struct item *) * capacity)) == NULL)
         return (-1);
 
     v->size = 0;
-    v->capacity = i_capacity;
+    v->capacity = capacity;
 
     return 0;
 }
@@ -76,18 +80,20 @@ vector_empty(vector *v){
  * vector is increased (doubled in this implementation)
  */
 int
-vector_push_back(vector *v, struct item *item){
+vector_push_back(vector *v, struct item *i){
     if (v->size == v->capacity) {
-        struct item **new = realloc(v->elements, v->capacity * 2);
+        size_t new_capacity = (v->capacity == 0)? DEFCAPACITY : v->capacity * 2;
+        struct item **new = realloc(v->elements, 
+            sizeof(struct item *) * new_capacity);
         if (new == NULL) {
             free(v->elements);
             return (-1);
         }
         v->elements = new;
-        v->capacity *= 2;
+        v->capacity = new_capacity;
     }
 
-    v->elements[v->size++] = item;
+    v->elements[v->size++] = i;
 
     return 0;
 }
@@ -107,7 +113,7 @@ vector_pop_back(vector *v){
  */
 struct item*
 vector_at(vector *v, size_t pos) {
-    if (pos <= v->size){
+    if (pos < v->size){
         return v->elements[pos];
     } else {
         return NULL;
@@ -135,4 +141,6 @@ vector_erase(vector *v, size_t pos){
 void
 vector_free(vector *v){
     free(v->elements);
+    v->capacity = 0;
+    v->size = 0;
 }

@@ -35,13 +35,13 @@ int main(){
     int i;
 
     if (vector_init(&v,2) < 0){
-        printf("failed to allocate\n");
+        printf("failed to initialize the vector\n");
         return 1;
     } else {
-        printf("allocation successful\n");
+        printf("initialization successful\n");
     }
 
-    printf("size = %ld, capacity = %ld\n", vector_size(&v), 
+    printf("current size = %ld, capacity = %ld\n", vector_size(&v), 
         vector_capacity(&v));
 
     for (i = 0; i < 5; i++){
@@ -52,32 +52,56 @@ int main(){
             printf("failed to add item %d\n", i);
             return 1;
         } else {
-            printf("item %d added successfully\n", i);
+            printf("item number %d added successfully\n", i);
         }
     }
 
-    printf("size = %ld, capacity = %ld\n", vector_size(&v), 
+    printf("current size = %ld, capacity = %ld\n", vector_size(&v), 
         vector_capacity(&v));
     
     for (i=0; i < vector_size(&v); i++){
         item_p = vector_at(&v, i);
         if (item_p != NULL)
-            printf("contents of item %d -> %s , %s\n", i, item_p->name, 
-                item_p->value);
+            printf("contents of item at position %d -> %s , %s\n", i, 
+                item_p->name, item_p->value);
     }
 
     printf("erasing item at position 2\n");
     vector_erase(&v, 2);
 
-    printf("size = %ld, capacity = %ld\n", vector_size(&v), 
+    printf("current size = %ld, capacity = %ld\n", vector_size(&v), 
         vector_capacity(&v));
     
     for (i=0; i < vector_size(&v); i++){
         item_p = vector_at(&v, i);
         if (item_p != NULL)
-            printf("contents of item %d -> %s , %s\n", i, item_p->name, 
-                item_p->value);
+            printf("contents of item at position %d -> %s , %s\n", i, 
+                item_p->name, item_p->value);
     }
+
+    printf("freeing....\n");
+    vector_free(&v);
+
+    /* State after free()ing the vector */
+    printf("current size = %ld, capacity = %ld\n", vector_size(&v), 
+        vector_capacity(&v));
+
+    printf("reinitializing the vector...\n");
+    vector_init(&v,12);
+
+    printf("current size = %ld, capacity = %ld\n", vector_size(&v), 
+        vector_capacity(&v));
+
+    struct item it;
+    sprintf(it.name,"nameX");
+    sprintf(it.value,"valueX");
+    printf("push_back...\n");
+    vector_push_back(&v, &it);
+    
+    printf("current size = %ld, capacity = %ld\n", vector_size(&v), 
+        vector_capacity(&v));
+    printf("contents of item at position %d -> %s , %s\n", 0, 
+        vector_at(&v,0)->name, vector_at(&v,0)->value);
 
     return 0;
 }
