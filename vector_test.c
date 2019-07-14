@@ -97,7 +97,6 @@ int main(){
     sprintf(it.value,"valueX");
     printf("push_back...\n");
     vector_push_back(&v, &it);
-    
     printf("current size = %ld, capacity = %ld\n", vector_size(&v), 
         vector_capacity(&v));
     printf("contents of item at position %d -> %s , %s\n", 0, 

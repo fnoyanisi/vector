@@ -82,17 +82,16 @@ vector_empty(vector *v){
 int
 vector_push_back(vector *v, struct item *i){
     if (v->size == v->capacity) {
-        size_t new_capacity = (v->capacity == 0)? DEFCAPACITY : v->capacity * 2;
-        struct item **new = realloc(v->elements, 
-            sizeof(struct item *) * new_capacity);
-        if (new == NULL) {
-            free(v->elements);
+        size_t new_capacity = (v->capacity == 0)? DEFCAPACITY : 
+                                                    v->capacity * 2;
+        struct item **new;
+        if ((new = realloc(v->elements, 
+            sizeof(struct item *) * new_capacity)) == NULL) {
             return (-1);
         }
         v->elements = new;
         v->capacity = new_capacity;
     }
-
     v->elements[v->size++] = i;
 
     return 0;
@@ -101,10 +100,42 @@ vector_push_back(vector *v, struct item *i){
 /*
  * Removes the last element of the vector.
  */
-void
+int
 vector_pop_back(vector *v){
-    if (v->size > 0)
+    if (v->size > 0){
         v->elements[v->size--] = NULL;
+        return 0;
+    }
+    return (-1);
+}
+
+/* 
+ * Returns the last element in the vector
+ */
+struct item*
+vector_back(vector *v){
+    return vector_at(v, vector_size(v)-1);
+}
+
+/*
+ * Inserts items at the specified location in the vector.
+ */
+int
+vector_insert(vector *v, struct item *it, size_t pos){
+    size_t i, last;
+    if (pos >= 0 && pos <= v->size){
+        if (pos == v->size || pos == 0){
+            return vector_push_back(v, it);
+        } else {
+            if (vector_push_back(v, vector_back(v)) < 0)
+                return (-1);
+            for (i = v->size-2; i!=pos; i--)
+                v->elements[i] = v->elements[i-1];
+            v->elements[i] = it;
+            return 0;
+        }
+    }
+    return (-1);
 }
 
 /*
@@ -121,17 +152,19 @@ vector_at(vector *v, size_t pos) {
 }
 
 /*
- * Removes the itemat specified location pos.
+ * Removes the item at specified location pos.
  */
-void
+int
 vector_erase(vector *v, size_t pos){
     int i;
     if (pos >= 0 && pos < v->size){
         v->size--;
-        for (i = pos; i<v->size; i++)
+        for (i = pos; i < v->size; i++)
             v->elements[i] = v->elements[i+1];
         v->elements[i] = NULL;
+        return 0;
     }
+    return (-1);
 }
 
 /*

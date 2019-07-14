@@ -46,14 +46,21 @@ typedef struct vector_t {
     size_t capacity;
 } vector;
 
+/* Initialization */
 int vector_init(vector *v, size_t i_capacity);
+/* Capacity */
 size_t vector_size(vector *v);
 size_t vector_capacity(vector *v);
 bool vector_empty(vector *v);
+/* Modifiers */
 int vector_push_back(vector *v, struct item *item);
-void vector_pop_back(vector *v);
-void vector_erase(vector *v, size_t pos);
+int vector_pop_back(vector *v);
+int vector_erase(vector *v, size_t pos);
+int vector_insert(vector *v, struct item *it, size_t pos);
+/* Element Access */
 struct item *vector_at(vector *v, size_t index);
+struct item *vector_back(vector *v);
+/* Freeing resources */
 void vector_free(vector *v);
 
 #endif
